@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.starxg.janetfilter.freemiumpluginliar</groupId>
+    <artifactId>intellij-freemium-plugin-liar</artifactId>
+    <version>1.0.0</version>
+
+    <description>通过修改 LicensingFacade 让 IntelliJ 插件误以为在试用中。</description>
+
+    <url>https://github.com/starxg/intellij-freemium-plugin-liar</url>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <ja-netfilter.version>2022.2.0</ja-netfilter.version>
+        <javassist.version>3.29.2-GA</javassist.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ja-netfilter</groupId>
+            <artifactId>ja-netfilter</artifactId>
+            <version>${ja-netfilter.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>${javassist.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
