@@ -1,0 +1,18 @@
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+
+<dependencies>
+    <dependency>
+        <groupId>com.github.starxg</groupId>
+        <artifactId>intellij-freemium-plugin-liar</artifactId>
+        <version>x.x.x</version>
+    </dependency>
+</dependencies>
+
+
+https://blog.starxg.com/2023/08/intellij-freemium-plugin-liar/
