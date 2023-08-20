@@ -6,13 +6,17 @@ import javassist.CtClass;
 
 import java.io.ByteArrayInputStream;
 import java.security.ProtectionDomain;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LicensingFacadeTransformer implements MyTransformer {
 
-    private final Map<String, Long> expires = new ConcurrentHashMap<>(10);
+    private final List<Lie> expires = new CopyOnWriteArrayList<>();
 
+
+    public static final String KEY_PREFIX = "key:";
+    public static final String STAMP_PREFIX = "stamp:";
+    public static final String EVAL_PREFIX = "eval:";
 
     @Override
     public String getHookClassName() {
@@ -32,8 +36,8 @@ public class LicensingFacadeTransformer implements MyTransformer {
         final CtClass clazz = pool.makeClass(new ByteArrayInputStream(classBytes));
 
         final StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, Long> e : expires.entrySet()) {
-            sb.append("if(\"").append(e.getKey()).append("\".equals($1))return \"eval:").append(e.getValue()).append("\";");
+        for (Lie e : expires) {
+            sb.append("if(\"").append(e.productCode).append("\".equals($1)){ javax.swing.JOptionPane.showMessageDialog(null,\"HHHH\"); return \"").append(e.prefix).append(e.expires).append("\";}");
         }
 
         clazz.getDeclaredMethod("getConfirmationStamp", new CtClass[]{pool.get("java.lang.String")})
@@ -64,7 +68,31 @@ public class LicensingFacadeTransformer implements MyTransformer {
      * @param expires     过期时间，单位时间戳
      */
     public LicensingFacadeTransformer lie(String productCode, long expires) {
-        this.expires.put(productCode, expires);
+        return lie(EVAL_PREFIX, productCode, String.valueOf(expires));
+    }
+
+    /**
+     * 设置过期时间
+     *
+     * @param prefix      {@link #EVAL_PREFIX}、{@link #KEY_PREFIX}、{@link #STAMP_PREFIX}
+     * @param productCode 产品码
+     * @param expires     过期时间，单位时间戳
+     */
+    public LicensingFacadeTransformer lie(String prefix, String productCode, String expires) {
+        final Lie lie = new Lie();
+        lie.prefix = prefix;
+        lie.productCode = productCode;
+        lie.expires = expires;
+
+        this.expires.add(lie);
+
         return this;
+    }
+
+
+    private static class Lie {
+        private String prefix;
+        private String productCode;
+        private String expires;
     }
 }
