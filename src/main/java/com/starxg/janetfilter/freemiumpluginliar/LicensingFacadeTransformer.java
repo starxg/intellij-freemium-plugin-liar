@@ -37,7 +37,7 @@ public class LicensingFacadeTransformer implements MyTransformer {
 
         final StringBuilder sb = new StringBuilder();
         for (Lie e : expires) {
-            sb.append("if(\"").append(e.productCode).append("\".equals($1)){ javax.swing.JOptionPane.showMessageDialog(null,\"HHHH\"); return \"").append(e.prefix).append(e.expires).append("\";}");
+            sb.append("if(\"").append(e.productCode).append("\".equals($1)){ return \"").append(e.prefix).append(e.expires).append("\";}");
         }
 
         clazz.getDeclaredMethod("getConfirmationStamp", new CtClass[]{pool.get("java.lang.String")})
